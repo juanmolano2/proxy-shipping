@@ -14,8 +14,13 @@ public class ShippingCalculatorProxy implements ShippingCalculator {
 
     @Override
     public double calculate(Order order) {
-        return flags.isEnabled("smart-shipping")
-                ? smart.calculate(order)
-                : legacy.calculate(order);
+
+        if (flags.isEnabled("smart-shipping")) {
+            System.out.println("LOG: Utilizando SmartShippingCalculator");
+            return smart.calculate(order);
+        } else {
+            System.out.println("LOG: Utilizando LegacyShippingCalculator");
+            return legacy.calculate(order);
+        }
     }
 }
