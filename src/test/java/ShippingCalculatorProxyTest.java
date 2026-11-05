@@ -5,23 +5,19 @@ public class ShippingCalculatorProxyTest {
 
     Order order = new Order("o1", "c1", "Medellín", 100, 4);
 
-    FeatureFlags flags = new FeatureFlags();
-
     ShippingCalculatorProxy proxy = new ShippingCalculatorProxy(
-            new LegacyShippingCalculator(),
-            new SmartShippingCalculator(),
-            flags
+            new SmartShippingCalculator()
     );
 
     @Test
-    void usaLegacyConFlagApagado() {
-        assertEquals(10.0, proxy.calculate(order));
+    void usaSmartShippingCalculator() {
+        assertEquals(15.0, proxy.calculate(order));
     }
 
     @Test
-    void usaSmartConFlagEncendido() {
-        flags.enable("smart-shipping");
-        assertEquals(15.0, proxy.calculate(order));
+    void checkoutFuncionaConElProxy() {
+        Checkout checkout = new Checkout(proxy);
+        assertEquals(115.0, checkout.total(order));
     }
 
     @Test
